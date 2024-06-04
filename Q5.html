@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q5</title>
+</head>
+
+<body>
+    <h3 id="text">我的網頁</h3>
+    <button id="color1" value="black">黑色</button>
+    <button id="color2" value="blue">藍色</button>
+</body>
+<script>
+    const textElement = document.getElementById('text');
+    const colorp1 = document.getElementById('color1');
+    const colorp2 = document.getElementById('color2');
+    colorp1.addEventListener('click',()=>{textElement.style.color='black'});
+    colorp2.addEventListener('click',()=>{textElement.style.color='blue'});
+    </script>
+</html>
