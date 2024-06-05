@@ -187,7 +187,7 @@
             let product = i*j;
             product = product < 10 ? '0'+ product : product;//乘積都要是兩位數
             row += `${i}*${j}=${product}\t`;//反引號，\t為跳格字元可以使輸出對齊
-        }
+        }//可以用padstart
         console.log(row);
     }
     ```
