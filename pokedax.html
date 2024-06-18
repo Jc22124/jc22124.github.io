@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokedex</title>
+    <link rel="styleheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('https://media.zenfs.com/zh-TW/pc3mag.com/ed036f7dc4dc8be8a2f16496a7b91f99');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95); /* 0.95為透明白色背景 */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .search-container {
+            margin-bottom: 40px;
+        }
+
+        #pokemonInput {
+            width: 200px;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+            font-size:16px;
+        }
+
+        #searchButton {
+            padding: 15px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #9900ff;
+            color: white;
+            cursor: pointer;
+            font-size:16px;
+        }
+
+        #searchButton:hover {
+            background-color: #5400b3;
+        }
+
+        .result-container {
+            display: none;
+            text-align: center;
+        }
+
+        .result-container img {
+            max-width: 100%;
+        }
+
+        .pokemon-info {
+            margin-top: 20px;   /* 與輸入框距離20像素 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>寶可夢圖鑑</h1>
+        <div class="search-container">
+            <input type="text" id="pokemonInput" placeholder="輸入寶可夢的英文名字">
+            <button id="searchButton">搜尋</button>
+        </div>
+        <div class="result-container" id="resultContainer">
+            <!-- 這邊顯示寶可夢資訊的地方 -->
+        </div>
+    </div>
+    <script>
+        document.getElementById('searchButton').addEventListener('click', async () => {
+            try {
+                const pokemonName = document.getElementById('pokemonInput').value.toLowerCase(); //將輸入值轉換為小寫，儲存到pokemonName
+                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+                if (!response.ok) {
+                throw new Error('Response Failed!');
+                } //檢查'ok'屬性，如果請求失敗。會拋出錯誤傳到catch
+                const data = await response.json();  //把資料轉成JSON格式
+                displayPokemonData(data);  //將資料顯示在網頁上
+            } catch (error) {
+                alert('未找到寶可夢，請重新輸入!!!');  //顯示警告框和其內容
+                console.error('Error:', error);
+            }
+        });
+
+        const displayPokemonData = (pokemon) => {  
+            const resultContainer = document.getElementById('resultContainer');  //取得元素中ID為resultContainer的元素，然後賦值給resultContainer變數
+            resultContainer.innerHTML = `
+                <div class="pokemon-info">
+                    <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
+                    <h2>${pokemon.name}</h2>
+                    <h3>ID: ${pokemon.id}</h3>
+                    <h3>屬性: ${pokemon.types.map(typeInfo => typeInfo.type.name).join(', ')}</h3>
+                </div>
+            `;  //將新的HTML內容放到resultContainer的區域，並利用模板字串。
+             resultContainer.style.display = 'block'; //確保其可見
+        }
+    </script>
+</body>
+</html>
+
+
+<!-- 1.在畫面上做一個搜尋按鈕名為search，當按下按鈕時可以拿到相關寶可夢的圖片、編號、名字、屬性 -->
+<!-- 2.設定我的按鈕樣式及提取資料後的圖片和文字顯示樣式 -->
+<!-- 3.在js寫出當我在輸入框搜尋寶可夢的名稱，再按下按鈕後，再用fetch call api提取其資料並顯示其圖片、編號、名字、屬性 -->
